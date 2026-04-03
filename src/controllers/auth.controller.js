@@ -6,11 +6,14 @@ const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password)
+    if (!username || !email || !password){
       return res.status(400).json({ message: 'All fields are required' });
+    }
 
-    if (await UserModel.emailExists(email))        
+    if (await UserModel.emailExists(email)){        
       return res.status(400).json({ message: 'User already exists' });
+    }
+
 
     const hashedPassword = await bcrypt.hash(String(password), 10);
     const newUser = await UserModel.create({ username, email, password: hashedPassword });
@@ -26,19 +29,23 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password)
+    if (!email || !password){
       return res.status(400).json({ message: 'All fields are required' });
+    }
 
     const user = await UserModel.findByEmail(email);
-    if (!user)
+    if (!user){
       return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
     const isValid = await bcrypt.compare(String(password), user.password);
-    if (!isValid)
+    if (!isValid){
       return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
-    if (user.status !== 'ACTIVE')
+    if (user.status !== 'ACTIVE'){
       return res.status(403).json({ message: 'User account is inactive' });
+    }
 
     const accessToken = generateAccessToken(user.id, user.role);
     
