@@ -4,6 +4,11 @@ A REST API for a personal finance dashboard. Built with Node.js, Express, and Po
 Supports role-based access so different users can view, manage, or fully control financial data.
 
 ---
+# API Documentation(Postman)
+https://documenter.getpostman.com/view/49134920/2sBXionAgF
+
+---
+
 
 ## Tech Stack
 
